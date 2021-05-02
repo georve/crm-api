@@ -12,6 +12,9 @@ import {MySequence} from './sequence';
 import {BcryptHasher} from './services/hash.password.bcrypt';
 import {JWTService} from './services/jwt-service';
 import {LoginUserService} from './services/user-service';
+import * as dotenv from 'dotenv';
+import * as dotenvExt from 'dotenv-extended';
+
 
 export {ApplicationConfig};
 
@@ -49,7 +52,16 @@ export class CrmAppApplication extends BootMixin(
         nested: true,
       },
     };
+
+    dotenv.config();
+    dotenvExt.load({
+      schema: '.env.example',
+      errorOnMissing: true,
+    });
   }
+
+
+
   setupBinding(): void {
     this.bind(PasswordHasherBindings.PASSWORD_HASHER).toClass(BcryptHasher);
     this.bind(PasswordHasherBindings.ROUNDS).to(PasswordHasherConstants.PASSWORD_ROUND_VALUE);
